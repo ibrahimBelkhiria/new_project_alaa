@@ -24,16 +24,19 @@ class FileController extends Controller
     public function uploadImage(Request $request)
     {
         $file= new File();
-        $uploadedImage=$request->files->get('file');
+
+        $uploadedImage=$request->files->get('image');
         /**
          * @var UploadedFile $image
          */
         $image=$uploadedImage;
+
         $imageName=md5(uniqid()).'.'.$image->guessExtension();
 
         $image->move($this->getParameter('image_directory'),$imageName);
 
         $file->setImage($imageName);
+
         $em=$this->getDoctrine()->getManager();
         $em->persist($file);
         $em->flush();

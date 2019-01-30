@@ -82,7 +82,9 @@ fos_rest:
 
     format_listener:
         rules:
+            - { path: '^/api/doc', priorities: ['html'], fallback_format: 'html' }
             - { path: '^/api', priorities: ['json'], fallback_format: 'json' }
+            - { path: '^/', priorities: ['json','html'], fallback_format:  'html' }
 
 
 fos_user:
@@ -98,3 +100,24 @@ lexik_jwt_authentication:
     public_key_path:       '%kernel.project_dir%/config/jwt/public.pem'  # required for token verification
     pass_phrase:      123456 # required for token creation, usage of an environment variable is recommended
     token_ttl:        3600
+
+
+nelmio_api_doc: ~
+
+
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: []
+        allow_headers: []
+        allow_methods: []
+        expose_headers: []
+        max_age: 0
+        hosts: []
+        origin_regex: false
+    paths:
+        '^/api/':
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+            max_age: 3600

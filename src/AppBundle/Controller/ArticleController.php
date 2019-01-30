@@ -14,6 +14,7 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,12 @@ class ArticleController   extends AbstractFOSRestController
     // get all articles from the database
 
     /**
+     * @ApiDoc(
+     *     resource=true,
+     *     description="get All articles",
+     *     section="articles"
+     * )
+     *
      * @Rest\Get("/api/get_all_articles")
      */
     public function getAllArticles()
@@ -43,6 +50,19 @@ class ArticleController   extends AbstractFOSRestController
 
 
     /**
+     *  @ApiDoc(
+     *     resource=true,
+     *     description="get_one_single_article",
+     *     section="articles",
+     *     requirements={
+    *        {
+     *      "name"="id",
+     *      "dataType"="integer",
+     *     "requirements"="\d+",
+     *       "description"="The article unique identifier."
+     *     }
+*     }
+     * )
      * @param $id
      * @Rest\Get("/api/articles/{id}",name="get_one_article_by_id")
      * @return View
@@ -59,6 +79,7 @@ class ArticleController   extends AbstractFOSRestController
 
         return View::create($article,Response::HTTP_OK);
     }
+
 
 
     /**

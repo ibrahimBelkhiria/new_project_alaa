@@ -33,3 +33,5 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    FOS\UserBundle\Form\Factory\FactoryInterface:
+        alias: fos_user.resetting.form.factory
