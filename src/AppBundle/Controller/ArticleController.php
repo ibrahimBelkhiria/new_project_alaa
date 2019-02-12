@@ -10,9 +10,12 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Article;
+use AppBundle\Representation\Articles;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Request\ParamFetcher;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -162,7 +165,53 @@ class ArticleController   extends AbstractFOSRestController
     }
 
 
+    // list all articles with pagination
 
+    /**
+     * @Rest\Get("/api/articles_paginate", name="paginated_article_list")
+     * @Rest\QueryParam(
+     *     name="keyword",
+     *     requirements="[a-zA-Z0-9]",
+     *     nullable=true,
+     *     description="The keyword to search for."
+     * )
+     * @Rest\QueryParam(
+     *     name="order",
+     *     requirements="asc|desc",
+     *     default="asc",
+     *     description="Sort order (asc or desc)"
+     * )
+     * @Rest\QueryParam(
+     *     name="limit",
+     *     requirements="\d+",
+     *     default="15",
+     *     description="Max number of articles per page."
+     * )
+     * @Rest\QueryParam(
+     *     name="offset",
+     *     requirements="\d+",
+     *     default="0",
+     *     description="The pagination offset"
+     * )
+     * @Rest\View()
+     * @param ParamFetcherInterface $paramFetcher
+     * @return Articles
+     */
+      public function getAllArticlesPaginated(ParamFetcherInterface $paramFetcher)
+      {
+
+          $pager = $this->getDoctrine()->getRepository('AppBundle:Article')->search(
+              $paramFetcher->get('keyword'),
+              $paramFetcher->get('order'),
+              $paramFetcher->get('limit'),
+              $paramFetcher->get('offset')
+          );
+
+
+
+
+          return new Articles($pager);
+      }
 
 
 

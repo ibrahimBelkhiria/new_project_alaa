@@ -85,6 +85,8 @@ fos_rest:
             - { path: '^/api/doc', priorities: ['html'], fallback_format: 'html' }
             - { path: '^/api', priorities: ['json'], fallback_format: 'json' }
             - { path: '^/', priorities: ['json','html'], fallback_format:  'html' }
+    param_fetcher_listener: true
+
 
 
 fos_user:
